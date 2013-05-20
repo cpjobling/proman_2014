@@ -31,12 +31,12 @@ Then /^I should see a message "([^\"]*)"$/ do |arg1|
 end
 
 Then /^my email address should be stored in the database$/ do
-  test_user = User.find_by_email("example@example.com")
+  test_user = User.where({email: "example@#{ENV["DOMAIN"]}"}).first
   test_user.should respond_to(:email)
 end
 
 Then /^my account should be unconfirmed$/ do
-  test_user = User.find_by_email("example@example.com")
+  test_user = User.where({email: "example@#{ENV["DOMAIN"]}"}).first
   test_user.confirmed_at.should be_nil
 end
 
