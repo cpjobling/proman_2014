@@ -1,6 +1,22 @@
 h1. Proman 2014
 
-This application was generated with the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer gem provided by the "RailsApps Project":http://railsapps.github.io/.
+h2. About this project
+
+_Proman_ is a web application designed to help with the management of undergraduate dissertation projects.
+It is designed to help with the gathering of project descriptions from academic staff, student selection of projects
+from the annually published list, allocation of projects to students, and the ongoing management of undergraduate
+dissertation projects through the academic year. It was created by Nicolay Parashkevanov, a student of Mobile
+Communications and Internet Technology at Swansea University. _Proman_ is a Ruby on Rails application and was
+launched as a "beta" web application in late May 2009. Proman 2014 is the fourth generation of this application,
+rebuilt from the ground up to exploit the latest innovations in modern Rails application development and to correct
+some of the major deficiencies of the first deployed version "Proman 2"https://github.com/cpjobling/Proman2.
+
+The source code for the Proman project is licensed by an Apache 2 licence and hosted on
+"githib.com"http://github.com/cpjobling/proman_2014. There is a Google Groups discussion group:
+[swansea-proman-discuss@googlegroups.com](http://groups.google.com/group/swansea-proman-discuss)
+and a [project blog](http://promanman.blogspot.com/).
+
+The starting point for this application was generated with the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer gem provided by the "RailsApps Project":http://railsapps.github.io/.
 
 h2. Diagnostics
 
@@ -46,11 +62,14 @@ The application is configured to send email using a Mandrill account.
 
 h2. Getting Started
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+To download a copy of the latest (HEAD) version go to
+"github.com/cpjobling/proman_2014"https://github.com/cpjobling/proman_mmxiii and follow the instructions.
+
+More detailed documentation will follow.
 
 h2. Documentation and Support
 
-This is the only documentation.
+This is the only documentation at the moment.
 
 h4. Issues
 
@@ -59,6 +78,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 h2. Similar Projects
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+h2. Project Dependencies
+
+See the "Gemfile"https://github.com/cpjobling/proman_2014/blob/master/Gemfile.
 
 h2. Contributing
 
@@ -73,8 +96,22 @@ If you add functionality to this application, create an alternative implementati
 
 h2. Credits
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+* The original version of Proman was written as part of an undergraduate dissertation project by Nicolay Parashkevanov (382392@swansea.ac.uk) between October 2008 and May 2009.
+
+* Some further development was done by Yapeng 'Tony' Gao (465858@swansea.ac.uk) in 2009-2010.
 
 h2. License
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Copyright 2009-2013 Swansea University
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
