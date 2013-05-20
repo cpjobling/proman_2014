@@ -59,3 +59,4 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 Capybara.ignore_hidden_elements = false
 
+ActionMailer::Base.delivery_method = :test

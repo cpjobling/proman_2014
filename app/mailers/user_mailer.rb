@@ -3,7 +3,7 @@ class UserMailer < ActionMailer::Base
 
   def welcome_email(user)
     mail(:to => user.email, :subject => "Invitation Request Received")
-    headers['X-MC-GoogleAnalytics'] = ENV["DOMAIN"]
+    headers['X-MC-GoogleAnalytics'] = "proman.#{ENV['DOMAIN']}"
     headers['X-MC-Tags'] = "welcome"
   end
 end

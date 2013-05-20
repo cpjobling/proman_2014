@@ -4,8 +4,12 @@ Proman2014::Application.routes.draw do
   end
   devise_scope :user do
     root :to => "devise/registrations#new"
+    match '/user/confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
   end
   root :to => "home#index"
   devise_for :users, :controllers => { :registrations => "registrations" }
-  resources :users
+  match 'users/bulk_invite/:quantity' => 'users#bulk_invite', :via => :get, :as => :bulk_invite
+  resources :users do
+    get 'invite', on: :member
+  end
 end

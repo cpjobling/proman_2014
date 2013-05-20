@@ -8,5 +8,5 @@ Feature: Send Invitations
     And I am logged in as an administrator
     When I visit the users page
     And I click a link "send invitation"
-    And I open the email with subject "Confirmation instructions"
-    Then I should see "You can confirm your account email" in the email body
+    And "example@swansea.ac.uk" opens the email with subject "Confirmation instructions"
+    Then they should see "confirm your email address and set your password" in the email body
