@@ -1,0 +1,9 @@
+%h1 Thank you
+#request-invite.modal{:style => "display: 'block';"}
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Thank you!
+  .modal-body{:style => "margin-bottom: 120px; overflow: visible"}
+    %p
+      We have received your request for an invitation to #{"proman.#{ENV['DOMAIN']}"}.
+    %p We'll contact you when we launch.
