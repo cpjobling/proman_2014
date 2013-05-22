@@ -24,6 +24,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def after_inactive_sign_up_path_for(resource)
     # the page prelaunch visitors will see after they request an invitation
+    # unless Ajax is used to return a partial
     '/thankyou.html'
   end
 
