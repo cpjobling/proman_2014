@@ -10,3 +10,4 @@ Feature: Send Invitations
     And I click a link "send invitation"
     And "example@swansea.ac.uk" opens the email with subject "Confirmation instructions"
     Then they should see "confirm your email address and set your password" in the email body
+
