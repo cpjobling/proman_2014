@@ -80,7 +80,8 @@ class User
   attr_accessible :role_ids, :as => :admin
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
 
-  after_create :send_welcome_email
+  after_create :add_user_to_mailchimp
+  before_destroy :remove_user_from_mailchimp
 
   # new function to set the password
   def attempt_set_password(params)
@@ -102,9 +103,34 @@ class User
 
 private
 
-    def send_welcome_email
+  def add_user_to_mailchimp
       return if email.include?(ENV['ADMIN_EMAIL'])
-      UserMailer.welcome_email(self).deliver
+      mailchimp = Gibbon.new
+      result = mailchimp.list_subscribe({
+        :id => ENV['MAILCHIMP_LIST_ID'],
+        :email_address => self.email,
+        :double_optin => false,
+        :update_existing => true,
+        :send_welcome => true
+        })
+      Rails.logger.info("Subscribed #{self.email} to MailChimp") if result
+    rescue Gibbon::MailChimpError => e
+      Rails.logger.info("MailChimp subscribe failed for #{self.email}: " + e.message)
     end
+
+  def remove_user_from_mailchimp
+    mailchimp = Gibbon.new
+    result = mailchimp.list_unsubscribe({
+      :id => ENV['MAILCHIMP_LIST_ID'],
+      :email_address => self.email,
+      :delete_member => true,
+      :send_goodbye => false,
+      :send_notify => true
+      })
+    Rails.logger.info("Unsubscribed #{self.email} from MailChimp") if result
+  rescue Gibbon::MailChimpError => e
+    Rails.logger.info("MailChimp unsubscribe failed for #{self.email}: " + e.message)
+  end
+
 
 end
