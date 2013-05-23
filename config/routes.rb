@@ -1,4 +1,13 @@
 Proman2014::Application.routes.draw do
+  # Static pages
+  match "/help", to: "static_pages#help"
+  match "/about", to: "static_pages#about"
+  match "/contact", to: "static_pages#contact"
+  match "/tos", to: "static_pages#tos"
+  match "/license", to: "static_pages#license"
+  match "/thankyou", to: "static_pages#thankyou"
+  match "/home", to: "static_pages#home"
+
   authenticated :user do
     root :to => 'home#index'
   end
@@ -11,4 +20,6 @@ Proman2014::Application.routes.draw do
   resources :users do
     get 'invite', on: :member
   end
+
+  resources :projects
 end
