@@ -9,7 +9,7 @@ Given(/^an administrator has sent me an invitation$/) do
   end
 
 Given(/^I confirm my account with valid data$/) do
-  @user = User.where({email: 'example@swansea.ac.uk'}).first
+  @user = User.where({email: "visitor@#{ENV['EMAIL_DOMAIN']}"}).first
   visit "/users/confirmation?confirmation_token=#{@user.confirmation_token}"
   fill_in 'Choose a Password', with: 'changeme'
   fill_in 'Password Confirmation', with: 'changeme'
@@ -28,7 +28,7 @@ Then(/^I should be able to edit my account$/) do
 end
 
 Given(/^I confirm my account with invalid data$/) do
-  @user = User.where({email: 'example@swansea.ac.uk'}).first
+  @user = User.where({email: "visitor@#{ENV['EMAIL_DOMAIN']}"}).first
   visit "/users/confirmation?confirmation_token=#{@user.confirmation_token}"
   fill_in 'Choose a Password', with: 'changeme'
   fill_in 'Password Confirmation', with: 'changeme2'

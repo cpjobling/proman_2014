@@ -5,7 +5,7 @@ describe User do
   before(:each) do
     @attr = {
       :name => "Example User",
-      :email => "user@example.com",
+      :email => "user@#{ENV['EMAIL_DOMAIN']}",
       :password => "changeme",
       :password_confirmation => "changeme"
     }
@@ -21,7 +21,7 @@ describe User do
   end
 
   it "should accept valid email addresses" do
-    addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
+    addresses = %w[123456@swan.ac.uk a.p.rofessor@swan.ac.uk 123456@swansea.ac.uk a.p.rofessor@swansea.ac.uk]
     addresses.each do |address|
       valid_email_user = User.new(@attr.merge(:email => address))
       valid_email_user.should be_valid
@@ -29,7 +29,7 @@ describe User do
   end
 
   it "should reject invalid email addresses" do
-    addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
+    addresses = %w[user@ac,uk user_at_swan.ac.uk example.user@swan.]
     addresses.each do |address|
       invalid_email_user = User.new(@attr.merge(:email => address))
       invalid_email_user.should_not be_valid
@@ -47,6 +47,22 @@ describe User do
     User.create!(@attr.merge(:email => upcased_email))
     user_with_duplicate_email = User.new(@attr)
     user_with_duplicate_email.should_not be_valid
+  end
+
+  it "should reject email addresses from invalid domains" do
+    addresses = %w[user@example.com user@foo.com user@cardiff.ac.uk]
+    addresses.each do |address|
+      invalid_email_user = User.new(@attr.merge(:email => address))
+      invalid_email_user.should_not be_valid
+    end
+  end
+
+  it "should accept email addresses from valid domains" do
+    addresses = %w[user@swan.ac.uk user@swansea.ac.uk]
+    addresses.each do |address|
+      valid_email_user = User.new(@attr.merge(:email => address))
+      valid_email_user.should be_valid
+    end
   end
 
   describe "passwords" do

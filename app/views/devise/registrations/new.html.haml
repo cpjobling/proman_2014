@@ -5,7 +5,7 @@
       %h3 Request Invitation
     .modal-body
       = f.error_notification
-      = f.input :email, placeholder: "user@#{ENV(MAIL_DOMAIN)}"
+      = f.input :email, placeholder: "user@#{ENV['EMAIL_DOMAIN']}"
     .modal-footer
       = f.submit "Request Invitation", :class => "btn btn-primary", :id => 'invitation_button'
       %a.btn{"data-dismiss" => "modal", :href => "#"} Close

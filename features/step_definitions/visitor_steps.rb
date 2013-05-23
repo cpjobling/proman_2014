@@ -1,6 +1,6 @@
 def new_user
-  @user ||= { :email => "example@#{ENV["DOMAIN"]}",
-    :password => "please", :password_confirmation => "please" }
+  @user ||= { :email => "visitor@#{ENV['EMAIL_DOMAIN']}",
+    :password => "changeme", :password_confirmation => "changeme" }
 end
 
 def invitation_request user
@@ -31,12 +31,12 @@ Then /^I should see a message "([^\"]*)"$/ do |arg1|
 end
 
 Then /^my email address should be stored in the database$/ do
-  test_user = User.where({email: "example@#{ENV["DOMAIN"]}"}).first
+  test_user = User.where({email: @user[:email]}).first
   test_user.should respond_to(:email)
 end
 
 Then /^my account should be unconfirmed$/ do
-  test_user = User.where({email: "example@#{ENV["DOMAIN"]}"}).first
+  test_user = User.where({email: @user[:email]}).first
   test_user.confirmed_at.should be_nil
 end
 
@@ -50,5 +50,10 @@ When /^I request an invitation with an invalid email$/ do
 end
 
 When(/^I request an invitation from an invalid domain$/) do
-  pending # express the regexp above with the code you wish you had
+  user = new_user.merge(:email => "visitor@example.com")
+  invitation_request user
+end
+
+Then(/^I should see an invalid domain for email message$/) do
+  page.should have_content "You can only request an invitation if you have valid #{ENV["INSTITUTION"]} email account."
 end

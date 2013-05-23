@@ -8,6 +8,6 @@ Feature: Send Invitations
     And I am logged in as an administrator
     When I visit the users page
     And I click a link "send invitation"
-    And "example@swansea.ac.uk" opens the email with subject "Confirmation instructions"
+    And "visitor@swansea.ac.uk" opens the email with subject "Confirmation instructions"
     Then they should see "confirm your email address and set your password" in the email body
 

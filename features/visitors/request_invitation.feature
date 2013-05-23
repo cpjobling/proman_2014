@@ -17,7 +17,7 @@ Feature: Request Invitation
 
   Scenario: User signs up with valid data
     When I request an invitation with valid user data
-    Then I should see a message "Thank You"
+    Then I should see a message "Thank you"
     And my email address should be stored in the database
     And my account should be unconfirmed
 

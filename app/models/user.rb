@@ -14,6 +14,8 @@ class User
   field :encrypted_password, :type => String, :default => ""
 
   validates_presence_of :email
+  validates :email, format: { with: /\A[A-Za-z0-9._%+-]+@(swan|swansea)\.ac\.uk\z/i, 
+    message: "You can only request an invitation if you have valid #{ENV['INSTITUTION']} email account.."}
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
