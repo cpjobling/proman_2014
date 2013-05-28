@@ -1,7 +1,7 @@
 ### UTILITY METHODS ###
 
 def create_visitor
-  @visitor ||= { :name => "Testy McUserton", :email => "example@#{ENV['EMAIL_DOMAIN']}",
+  @visitor ||= { :name => "Mr Testy McUserton", :email => "example@#{ENV['EMAIL_DOMAIN']}",
     :password => "changeme", :password_confirmation => "changeme" }
 end
 
