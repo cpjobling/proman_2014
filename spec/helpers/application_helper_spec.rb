@@ -27,7 +27,7 @@ describe ApplicationHelper do
 
   describe "logo" do
     it "should return the Proman logo" do
-      logo.should eql(raw "Proman<em><sup>mxiv</sup></em>")
+      logo.should eql(raw "Proman<em><sup>mmxiv</sup></em>")
     end
   end
 
