@@ -29,7 +29,7 @@ module ApplicationHelper
 
   # The Proman logo
   def logo
-    raw "Proman<em><sup>mxiv</sup></em>"
+    raw "Proman<em><sup>mmxiv</sup></em>"
   end
 
 
