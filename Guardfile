@@ -19,7 +19,7 @@ guard 'rails' do
 end
 
 
-guard :rspec do
+guard :rspec, :version => 2, :after_all_pass => false do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -32,6 +32,11 @@ guard :rspec do
   watch('config/routes.rb')                           { "spec/routing" }
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
 
+  watch(%r{^app/views/(.+)/}) do |m|
+    (m[1][/_pages/] ? "spec/requests/#{m[1]}_spec.rb" : 
+                       "spec/requests/#{m[1].singularize}_pages_spec.rb")
+  end
+
   # Capybara features specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/features/#{m[1]}_spec.rb" }
 
@@ -40,3 +45,15 @@ guard :rspec do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
+
+guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAILS_ENV' => 'test' } do
+  watch('config/application.rb')
+  watch('config/environment.rb')
+  watch(%r{^config/environments/.+\.rb$})
+  watch(%r{^config/initializers/.+\.rb$})
+  watch('Gemfile')
+  watch('Gemfile.lock')
+  watch('spec/spec_helper.rb') { :rspec }
+  watch('test/test_helper.rb') { :test_unit }
+  watch(%r{features/support/}) { :cucumber }
+end
