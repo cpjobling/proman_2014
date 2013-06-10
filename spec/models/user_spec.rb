@@ -4,7 +4,7 @@ describe User do
 
   before(:each) do
     @attr = {
-      :name => "Example User",
+      :name => Name.new("Example","User"),
       :email => "user@#{ENV['EMAIL_DOMAIN']}",
       :password => "changeme",
       :password_confirmation => "changeme"
@@ -116,4 +116,36 @@ describe User do
 
   end
 
+  describe "name" do
+
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+
+    it "should have a name attribute" do
+      @user.should respond_to(:name)
+    end
+
+    it "should set the name attribute"
+
+    it "should return a name" do
+      @user.name.to_s.should == "Mr Example User"
+    end
+
+    it "should return the name object" do
+      @user.name.should eq(Name.new("Example","User"))
+    end
+
+  end
+
+  describe "name validations" do
+
+    it "should validate title"
+
+    it "should validate first_name"
+
+    it "should validate last name"
+
+  end
+  
 end

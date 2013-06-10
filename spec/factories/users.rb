@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :user do
-    name 'Test User'
+    name Name.new('Test','User')
     email "example@#{ENV['EMAIL_DOMAIN']}"
     password 'changeme'
     password_confirmation 'changeme'

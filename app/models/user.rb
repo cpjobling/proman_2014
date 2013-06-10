@@ -68,6 +68,9 @@ class User
   field :confirmation_sent_at, :type => Time
   field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
+  ## Name
+  field :name, :type => Name
+
   ## Lockable
   # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
   # field :unlock_token,    :type => String # Only if unlock strategy is :email or :both
@@ -77,7 +80,6 @@ class User
   # field :authentication_token, :type => String
   # run 'rake db:mongoid:create_indexes' to create indexes
   index({ email: 1 }, { unique: true, background: true })
-  field :name, :type => String
   #validates_presence_of :name
   attr_accessible :role_ids, :as => :admin
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
