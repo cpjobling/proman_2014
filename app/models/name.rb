@@ -2,15 +2,15 @@ class Name
 
   include Comparable
 
-  attr_reader :title, :first_name, :other_names, :last_name, :preferred_name
+  attr_reader :honorific, :first_name, :other_names, :last_name, :preferred_name
 
-  def initialize(first_name,last_name,title='Mr',other_names='',preferred_name='')
-    @first_name, @last_name, @title, @other_names, @preferred_name = 
-      first_name, last_name, title, other_names, preferred_name
+  def initialize(first_name,last_name,honorific='Mr',other_names='',preferred_name='')
+    @first_name, @last_name, @honorific, @other_names, @preferred_name = 
+      first_name, last_name, honorific, other_names, preferred_name
   end
 
   def to_s
-    [@title,@first_name,@other_names,@last_name].join(' ').squeeze(' ')
+    [@honorific,@first_name,@other_names,@last_name].join(' ').squeeze(' ')
   end
 
   def name
@@ -29,12 +29,12 @@ class Name
     "#{@last_name}, #{first_name} #{other_names}".squeeze(' ').strip()
   end
 
-  def sortable_name_and_title
-    "#{last_name}, #{title} #{first_name1} #{first_name2} #{first_name3}".squeeze(" ").strip
+  def sortable_name_and_honorific
+    "#{last_name}, #{honorific} #{first_name1} #{first_name2} #{first_name3}".squeeze(" ").strip
   end
 
   def formal_address
-    "#{title} #{last_name}".squeeze(" ").strip
+    "#{honorific} #{last_name}".squeeze(" ").strip
   end
 
   def informal_name
@@ -45,13 +45,13 @@ class Name
      "#{last_name}, #{name}".squeeze(" ").strip
   end
 
-  def sortable_informal_name_and_title
-     "#{last_name}, #{title} #{name}".squeeze(" ").strip
+  def sortable_informal_name_and_honorific
+     "#{last_name}, #{honorific} #{name}".squeeze(" ").strip
   end
 
   # Converts an object of this instance into a database friendly value.
   def mongoize
-    { first_name: @first_name, last_name: @last_name, title: @title, other_names: @other_names, preferred_name: @preferred_name }
+    { first_name: @first_name, last_name: @last_name, honorific: @honorific, other_names: @other_names, preferred_name: @preferred_name }
   end
 
   def ==(other)
@@ -75,7 +75,8 @@ class Name
     # Get the object as it was stored in the database, and instantiate
     # this custom class from it.
     def demongoize(object)
-      Name.new(object[:first_name], object[:last_name], object[:title], object[:other_names], object[:preferred_name])
+      Name.new(object[:first_name], object[:last_name], object[:honorific], 
+          object[:other_names], object[:preferred_name])
     end
 
     # Takes any possible object and converts it to how it would be
@@ -83,7 +84,7 @@ class Name
     def mongoize(object)
       case object
       when Name then object.mongoize
-      when Hash then Name.new(object[:first_name], object[:last_name], object[:title], 
+      when Hash then Name.new(object[:first_name], object[:last_name], object[:honorific], 
               object[:other_names], object[:preferred_name]).mongoize
       else object
       end

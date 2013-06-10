@@ -8,6 +8,18 @@
         for <%= resource.email %>
       <% end %>
     </legend>
+    <%= f.simple_fields_for :name do |name_form|%>
+      <%= name_form.label :title,'Choose your title:' %>
+      <%= name_form.input :title, collection: %w[Mr Miss Ms Mrs Prof. Dr]%>
+      <%= name_form.label :first_name, 'First name' %>
+      <%= name_form.input :first_name %>
+      <%= name_form.label :other_names, 'Other names' %>
+      <%= name_form.input :other_names %>
+      <%= name_form.label :other_name, 'Last name' %>
+      <%= name_form.input :last_name %>
+      <%= name_form.label :preferred_name, 'Preferred name' %>
+      <%= name_form.input :preferred_name %>
+    <% end %> 
     <% if @requires_password %>
       <p>
         <%= f.label :password,'Choose a Password:' %>

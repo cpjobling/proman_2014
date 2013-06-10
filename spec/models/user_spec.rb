@@ -4,7 +4,11 @@ describe User do
 
   before(:each) do
     @attr = {
-      :name => Name.new("Example","User"),
+      :honorific => "Mr",
+      :last_name => "User",
+      :first_name => "Example",
+      :other_names => "The",
+      :preferred_name => "Hugo",
       :email => "user@#{ENV['EMAIL_DOMAIN']}",
       :password => "changeme",
       :password_confirmation => "changeme"
@@ -65,6 +69,10 @@ describe User do
     end
   end
 
+  def title
+    read_attribute(:title)
+  end
+
   describe "passwords" do
 
     before(:each) do
@@ -116,6 +124,19 @@ describe User do
 
   end
 
+  describe "default user" do
+    it "should be anonymous" do
+      user = User.create!({
+        :email => "user2@#{ENV['EMAIL_DOMAIN']}",
+        :password => "changeme",
+        :password_confirmation => "changeme"
+      })
+      user.name.should eq Name.new("Anne","Onymous","Ms")
+    end
+
+    it "should have student role"
+  end
+
   describe "name" do
 
     before(:each) do
@@ -124,6 +145,46 @@ describe User do
 
     it "should have a name attribute" do
       @user.should respond_to(:name)
+    end
+
+    it "should have a honorific attribute" do
+      @user.should respond_to(:honorific)
+    end
+
+    it "should return the user's honorific" do
+      @user.honorific.should eq @attr[:honorific]
+    end
+
+    it "should have a first_name attribute" do
+      @user.should respond_to(:first_name)
+    end
+
+    it "should return the user's first name" do
+      @user.first_name.should eq @attr[:first_name]
+    end
+
+    it "should have a last_name attribute" do
+      @user.should respond_to(:last_name)
+    end
+
+    it "should return the user's last name" do
+      @user.last_name.should eq @attr[:last_name]
+    end
+
+    it "should have a other_names attribute" do
+      @user.should respond_to(:other_names)
+    end
+
+    it "should return the user's other names" do
+      @user.other_names.should eq @attr[:other_names]
+    end
+
+    it "should have a preferred_name attribute" do
+      @user.should respond_to(:preferred_name)
+    end
+
+    it "should return the user's preferred name" do
+      @user.preferred_name.should eq @attr[:preferred_name]
     end
 
     it "should set the name attribute"
@@ -140,12 +201,15 @@ describe User do
 
   describe "name validations" do
 
-    it "should validate title"
+    it "should require honorific (title)" do
+      User.new(@attr.merge(:honorific => "")).
+        should_not be_valid
+    end
 
     it "should validate first_name"
 
     it "should validate last name"
 
   end
-  
+
 end

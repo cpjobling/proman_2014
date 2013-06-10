@@ -10,7 +10,16 @@ Given(/^an administrator has sent me an invitation$/) do
 
 Given(/^I confirm my account with valid data$/) do
   @user = User.where({email: "visitor@#{ENV['EMAIL_DOMAIN']}"}).first
+  binding.pry
   visit "/users/confirmation?confirmation_token=#{@user.confirmation_token}"
+
+  @name = @user.name
+  save_and_open_page
+  fill_in 'Family name', with: @name.last_name
+  fill_in 'First name', with: @name.first_name
+  fill_in 'Title', with: @name.Title
+  fill_in 'Other names', with: @name.other_names
+  fill_in 'Preferred name', with: @name.preferred_name
   fill_in 'Choose a Password', with: 'changeme'
   fill_in 'Password Confirmation', with: 'changeme'
   click_button 'Activate'

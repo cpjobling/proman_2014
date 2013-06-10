@@ -10,7 +10,7 @@
   %table.table.table-condensed
     %thead
       %tr
-        %th Username
+        %th Name
         %th Email
         %th Requested
         %th Invitation
@@ -23,8 +23,8 @@
     %tbody
       - @users.each do |user|
         %tr
-          %td= link_to user.name, user
-          %td= user.email
+          %td= link_to user.name.full_name, user
+          %td= link_to user.email, user
           %td= user.created_at.to_date
           %td
             = (user.confirmation_token.nil? ? (link_to "send invitation", invite_user_path(user), {:class => 'btn btn-mini'}) : (link_to "resend", invite_user_path(user), {:class => 'btn btn-mini'})) unless user.confirmed_at

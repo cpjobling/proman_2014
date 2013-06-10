@@ -45,6 +45,8 @@ class User
       errors.add :base, "You must receive an invitation before you set your password."
     end
   end
+
+  delegate :first_name, :last_name, :honorific, :other_names, :preferred_name, to: :name
   
   ## MongoDB Fields
 
@@ -69,7 +71,7 @@ class User
   field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
   ## Name
-  field :name, :type => Name
+  field :name, :type => Name, :default => Name.new('Anne','Onymous','Ms')
 
   ## Lockable
   # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
@@ -82,8 +84,10 @@ class User
   index({ email: 1 }, { unique: true, background: true })
   #validates_presence_of :name
   attr_accessible :role_ids, :as => :admin
+  attr_accessible :honorific, :first_name, :last_name, :other_names, :preferred_name
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
 
+  before_save :initialize_name
   after_create :add_user_to_mailchimp
   before_destroy :remove_user_from_mailchimp
 
@@ -106,6 +110,10 @@ class User
   end
 
 private
+
+  def initialize_name
+    name = Name.new(first_name,last_name,honorific,other_names,preferred_name)
+  end
 
   def add_user_to_mailchimp
       return if email.include?(ENV['ADMIN_EMAIL'])

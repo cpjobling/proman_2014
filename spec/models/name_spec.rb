@@ -32,14 +32,14 @@ describe Name do
     end
   end
 
-  describe "#sortable_name_and_title" do
+  describe "#sortable_name_and_honorific" do
     it "prints sortable name" do
       name.sortable_name.should eql "Tolkien, John Ronald Reuel"
     end
   end
 
   describe "#formal_address" do
-    it "prints title and surname" do
+    it "prints honorific and surname" do
       name.formal_address.should eql "Prof. Tolkien"
     end
   end
@@ -64,18 +64,18 @@ describe Name do
     end
   end
 
-  describe "#sortable_informal_name_and_title" do
-    it "prints first name, title and surname" do
-      john.sortable_informal_name_and_title.should eql "Tolkien, Prof. John"
+  describe "#sortable_informal_name_and_honorific" do
+    it "prints first name, honorific and surname" do
+      john.sortable_informal_name_and_honorific.should eql "Tolkien, Prof. John"
     end
 
-    it "prints preferred name, title and surname" do
-      name.sortable_informal_name_and_title.should eql "Tolkien, Prof. JRR"
+    it "prints preferred name, honorific and surname" do
+      name.sortable_informal_name_and_honorific.should eql "Tolkien, Prof. JRR"
     end
   end
 
   describe "Corner cases" do
-    it "Should have title 'Mr' by default" do
+    it "Should have honorific 'Mr' by default" do
       Name.new("Bilbo","Baggins").full_name.should == "Mr Bilbo Baggins"
     end
     it "Should not print missing other names" do
@@ -85,7 +85,9 @@ describe Name do
 
   describe "#mongoize" do
     it "should return a hash" do
-      expected = { first_name: name.first_name, last_name: name.last_name, title: name.title, other_names: name.other_names, preferred_name: name.preferred_name }
+      expected = { first_name: name.first_name, last_name: name.last_name, 
+        honorific: name.honorific, other_names: name.other_names, 
+        preferred_name: name.preferred_name }
       name.mongoize.should be_eql expected
     end
   end
@@ -100,11 +102,12 @@ describe Name do
 
   describe "Name.mongoize" do
     it "should return a the mongoized Hash for a Name" do
-      expected = { first_name: name.first_name, last_name: name.last_name, title: name.title, other_names: name.other_names, preferred_name: name.preferred_name }
+      expected = { first_name: name.first_name, last_name: name.last_name, honorific: name.honorific, other_names: name.other_names, preferred_name: name.preferred_name }
+      puts Name.mongoize(name)
       Name.mongoize(name).should be_eql expected
     end
     it "should instantiate a Name from a Hash then return the mongoized Hash" do
-      h = { first_name: name.first_name, last_name: name.last_name, title: name.title, other_names: name.other_names, preferred_name: name.preferred_name }
+      h = { first_name: name.first_name, last_name: name.last_name, honorific: name.honorific, other_names: name.other_names, preferred_name: name.preferred_name }
       Name.mongoize(h).should be_eql h
     end
     it "should return the parameter if not passed a Name or a Hash" do
