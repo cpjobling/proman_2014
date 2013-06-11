@@ -17,6 +17,8 @@ class User
   validates :email, format: { with: /\A[A-Za-z0-9._%+-]+@(swan|swansea)\.ac\.uk\z/i, 
     message: "You can only request an invitation if you have valid #{ENV['INSTITUTION']} email account.."}
 
+  validate :name_validation
+
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
   validates_confirmation_of :password
@@ -110,6 +112,21 @@ class User
   end
 
 private
+
+  def name_validation
+    if (name.honorific.blank?)
+      errors[:base] << 'Title cannot be blank'
+      errors[:honorific] << 'cannot be blank'
+    end
+    if (name.first_name.blank?)
+      errors[:base] << 'First name cannot be blank'
+      errors[:first_name] << 'cannot be blank'
+    end
+    if (name.last_name.blank?)
+      errors[:base] << 'Last name cannot be blank'
+      errors[:last_name] << 'cannot be blank'
+    end
+  end
 
   def initialize_name
     name = Name.new(first_name,last_name,honorific,other_names,preferred_name)
