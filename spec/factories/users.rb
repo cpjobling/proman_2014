@@ -8,15 +8,22 @@ FactoryGirl.define do
   factory :user do
     association :name, factory: :name, strategy: :build
     sequence(:email) { |n| "user#{n}@swansea.ac.uk" }
-    password 'changeme'
-    password_confirmation 'changeme'
-    # required if the Devise Confirmable module is used
-    confirmed_at Time.now
-    factory :unconfirmed_registered_user, parent: :user do
+
+    factory :unconfirmed_registered_user do
       after(:build) { |user| user.send_confirmation_instructions }
     end
+
+    trait :with_passwords do 
+      password 'changeme'
+      password_confirmation 'changeme'
+    end
+
     factory :admin_user do
       after(:build) { |user| user.add_role(:admin) }
+    end
+    factory :confirmed_user do
+      # required if the Devise Confirmable module is used
+      confirmed_at Time.now
     end
   end
 end

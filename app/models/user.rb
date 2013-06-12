@@ -4,6 +4,7 @@ class User
   include Mongoid::Timestamps
 
   embeds_one :name
+  accepts_nested_attributes_for :name, allow_destroy: true
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -89,17 +90,19 @@ class User
   #validates_presence_of :name
   attr_accessible :role_ids, :as => :admin
   #attr_accessible :honorific, :first_name, :last_name, :other_names, :preferred_name
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
+  attr_accessible :name, :name_attributes
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
 
   before_save :add_default_role
   after_create :add_user_to_mailchimp
   before_destroy :remove_user_from_mailchimp
 
   # new function to set the password
-  def attempt_set_password(params)
+  def attempt_set_name_and_password(params)
     p = {}
     p[:password] = params[:password]
     p[:password_confirmation] = params[:password_confirmation]
+    p[:name_attributes] = params[:name_attributes] if params[:name_attributes]
     update_attributes(p)
   end
 

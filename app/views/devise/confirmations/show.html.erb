@@ -8,27 +8,14 @@
         for <%= resource.email %>
       <% end %>
     </legend>
-    <%= f.simple_fields_for :name do |name_form|%>
-      <%= name_form.label :title,'Choose your title:' %>
-      <%= name_form.input :title, collection: %w[Mr Miss Ms Mrs Prof. Dr]%>
-      <%= name_form.label :first_name, 'First name' %>
-      <%= name_form.input :first_name %>
-      <%= name_form.label :other_names, 'Other names' %>
-      <%= name_form.input :other_names %>
-      <%= name_form.label :other_name, 'Last name' %>
-      <%= name_form.input :last_name %>
-      <%= name_form.label :preferred_name, 'Preferred name' %>
-      <%= name_form.input :preferred_name %>
-    <% end %> 
+    <%= f.input :honorific, collection: %w[Mr Miss Ms Mrs Prof. Dr], label: "Title"%>
+    <%= f.input :first_name %>
+    <%= f.input :other_names, required: false %>
+    <%= f.input :last_name %>
+    <%= f.input :preferred_name, required: false %>
     <% if @requires_password %>
-      <p>
-        <%= f.label :password,'Choose a Password:' %>
-        <%= f.password_field :password %>
-      </p>
-      <p>
-        <%= f.label :password_confirmation, 'Password Confirmation:' %>
-        <%= f.password_field :password_confirmation %>
-      </p>
+      <%= f.input :password, label: 'Choose a Password:' %>
+      <%= f.input :password_confirmation, label: 'Password Confirmation:' %>
     <% end %>
     <%= hidden_field_tag :confirmation_token, @confirmation_token %>
     <p><%= f.submit "Activate" %></p>
