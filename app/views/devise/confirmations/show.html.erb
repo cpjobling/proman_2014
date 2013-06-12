@@ -1,7 +1,7 @@
 <% require 'pry' %>
-<h2>Account Activation</h2>
+<% title 'Account Activation' %>
 <%= simple_form_for resource, :as => resource_name, :url => update_user_confirmation_path, :html => {:class => 'form-horizontal', :method => 'put'}, :id => 'activation-form' do |f| %>
-  <%= devise_error_messages! %>
+  <%= render 'shared/error_messages' %>
   <fieldset>
     <legend>
       Account Activation
@@ -10,7 +10,6 @@
       <% end %>
     </legend>
     <%= f.simple_fields_for :name do |n| %>
-      <% binding.pry %>
       <%= n.input :honorific, collection: %w[Mr Miss Ms Mrs Prof. Dr], label: "Title"%>
       <%= n.input :first_name %>
       <%= n.input :other_names, required: false %>
