@@ -125,17 +125,54 @@ describe User do
 
   end
 
-  describe "default user" do
-    it "should be anonymous" do
-      user = User.create!({
-        :email => "user2@#{ENV['EMAIL_DOMAIN']}",
-        :password => "changeme",
-        :password_confirmation => "changeme"
-      })
-      user.name.should eq Name.new("Anne","Onymous","Ms")
+  
+
+  describe 'roles' do
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+    
+    describe "default user role" do
+      it "should have student role" do
+        @user.has_role?(:student).should be_true
+      end
     end
 
-    it "should have student role"
+    describe '#admin?' do
+      it "should not be admin by default" do
+        @user.admin?.should be_false
+      end
+
+      it "should be admin when admin role added" do
+        @user.add_role(:admin)
+        @user.admin?.should be_true
+      end
+    end
+
+    describe '#student' do
+      it "should be student by default" do
+        @user.student?.should be_true
+      end
+
+      it "should be possible to not be a student" do
+        @user.remove_role(:student)
+        @user.student?.should be_false
+      end
+    end
+
+    describe '#supervisor' do
+      it "should not be supervisor by default" do
+        @user.supervisor?.should be_false
+      end
+
+      it "should be possible to add supervisor role" do
+        @user.add_role(:supervisor)
+        @user.supervisor?.should be_true
+      end
+    end
+
+    describe '#supervisor'
+
   end
 
   describe "name" do
@@ -149,7 +186,7 @@ describe User do
     end
 
     it "should have a name attribute" do
-      @user.name.should eq Name.demongoize(@attr[:name])
+      @user.name.should eq Name.new(@attr[:name])
     end
 
     it "should have a honorific attribute" do
@@ -200,24 +237,32 @@ describe User do
 
   describe "name validations" do
 
+    before(:each) do
+      @user = User.new(email: @attr[:email])
+    end
+
     it "should be valid without other names and preferred name" do
       @attr[:name].merge!(other_names: "", preferred_name: "")
-      User.new(@attr).should be_valid
+      @user.update_attributes(@attr)
+      @user.should be_valid
     end
 
     it "should require honorific (title)" do
       @attr[:name].merge!(honorific: "")
-      User.new(@attr).should_not be_valid
+      @user.update_attributes(@attr)
+      @user.should_not be_valid
     end
 
     it "should validate first_name" do
       @attr[:name].merge!(first_name: "")
-      User.new(@attr).should_not be_valid
+      @user.update_attributes(@attr)
+      @user.should_not be_valid
     end
 
     it "should validate last name" do
        @attr[:name].merge!(last_name: "")
-      User.new(@attr).should_not be_valid
+       @user.update_attributes(@attr)
+       @user.should_not be_valid
     end
 
   end

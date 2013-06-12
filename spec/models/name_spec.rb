@@ -2,8 +2,12 @@ require "rspec"
 
 describe Name do
 
-  let (:name) { Name.new('John', 'Tolkien', 'Prof.', 'Ronald Reuel', 'JRR') }
-  let (:john) { Name.new('John', 'Tolkien', 'Prof.', 'Ronald Reuel') }
+  let (:name) { FactoryGirl.build(:name, 
+    {first_name: 'John', last_name: 'Tolkien', honorific: 'Prof.', 
+    other_names: 'Ronald Reuel', preferred_name: 'JRR'}) }
+  let (:john) { FactoryGirl.build(:name, 
+    {first_name: 'John', last_name: 'Tolkien', honorific: 'Prof.', 
+    other_names: 'Ronald Reuel'}) }
 
   it "prints name in full" do
     name.to_s.should eql "Prof. John Ronald Reuel Tolkien"
@@ -76,58 +80,17 @@ describe Name do
 
   describe "Corner cases" do
     it "Should have honorific 'Mr' by default" do
-      Name.new("Bilbo","Baggins").full_name.should == "Mr Bilbo Baggins"
+      Name.new({first_name: "Bilbo",last_name: "Baggins"}).full_name.should == "Mr Bilbo Baggins"
     end
     it "Should not print missing other names" do
-      Name.new("Gandalf","The White","Wiz.").full_name.should == "Wiz. Gandalf The White"
-    end
-  end
-
-  describe "#mongoize" do
-    it "should return a hash" do
-      expected = { first_name: name.first_name, last_name: name.last_name, 
-        honorific: name.honorific, other_names: name.other_names, 
-        preferred_name: name.preferred_name }
-      name.mongoize.should be_eql expected
-    end
-  end
-
-  describe "Name.demongoize" do
-    it "should return a Name from a Hash" do
-      db_value = name.mongoize
-      object = Name.demongoize(db_value)
-      object.should be_eql name
-    end
-  end
-
-  describe "Name.mongoize" do
-    it "should return a the mongoized Hash for a Name" do
-      expected = { first_name: name.first_name, last_name: name.last_name, honorific: name.honorific, other_names: name.other_names, preferred_name: name.preferred_name }
-      puts Name.mongoize(name)
-      Name.mongoize(name).should be_eql expected
-    end
-    it "should instantiate a Name from a Hash then return the mongoized Hash" do
-      h = { first_name: name.first_name, last_name: name.last_name, honorific: name.honorific, other_names: name.other_names, preferred_name: name.preferred_name }
-      Name.mongoize(h).should be_eql h
-    end
-    it "should return the parameter if not passed a Name or a Hash" do
-      p = name.to_s
-      Name.mongoize(p).should be_eql p
-    end
-  end
-
-  describe "Name.evolve" do
-    it "should mongoize a Name when passed a Name" do
-      Name.evolve(name).should be_eql name.mongoize
-    end
-    it "should return the parameter when not passed a Name" do
-      Name.evolve(name.to_s).should be_eql name.to_s
+      Name.new({first_name: "Gandalf", last_name: "The White", honorific: "Wiz."}).full_name.should == "Wiz. Gandalf The White"
     end
   end
 
   describe "#==" do
     it "should return true when objects are equal" do
-      (name == Name.new('John', 'Tolkien', 'Prof.', 'Ronald Reuel', 'JRR')).should be_true
+      (name == Name.new({first_name: 'John', last_name: 'Tolkien', 
+        honorific: 'Prof.', other_names: 'Ronald Reuel', preferred_name: 'JRR'})).should be_true
     end
     it "should return false when names are not equal" do
       (name == john).should be_false
@@ -145,7 +108,8 @@ describe Name do
 
   describe "#eql?" do
     it "should return true when objects are equal" do
-      (name.eql? Name.new('John', 'Tolkien', 'Prof.', 'Ronald Reuel', 'JRR')).should be_true
+      (name.eql? Name.new({first_name: 'John', last_name: 'Tolkien', 
+        honorific: 'Prof.', other_names: 'Ronald Reuel', preferred_name: 'JRR'})).should be_true
     end
     it "should return false when names are not equal" do
       (name.eql? john).should be_false
@@ -157,14 +121,18 @@ describe Name do
 
   describe "<=>" do
     it "should return 0 when names are equal" do
-      (Name.new("Bilbo", "Baggins") <=> Name.new("Bilbo", "Baggins")).should == 0
+      (Name.new({first_name: "Bilbo", last_name: "Baggins"}) <=> Name.new({first_name: "Bilbo", last_name: "Baggins"})).should == 0
     end
     it "should return -1 when name precedes other name" do
-      (Name.new("Bilbo", "Baggins") <=> Name.new("Frodo", "Baggins")).should == -1
+      (Name.new({first_name: "Bilbo", last_name: "Baggins"}) <=> Name.new({first_name: "Frodo", last_name: "Baggins"})).should == -1
     end
     it "should return +1 when name comes after other name" do
-      (Name.new("Bilbo", "Baggins") <=> Name.new("Arthur", "Baggins")).should == +1
+      (Name.new({first_name: "Bilbo", last_name: "Baggins"}) <=> Name.new({first_name: "Arthur", last_name: "Baggins"})).should == +1
     end
   end
+
+  it { should validate_presence_of(:honorific) }
+  it { should validate_presence_of(:first_name) }
+  it { should validate_presence_of(:last_name) }
 
 end

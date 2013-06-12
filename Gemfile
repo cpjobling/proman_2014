@@ -40,6 +40,8 @@ gem "hub", ">= 1.10.2", :require => nil, :group => [:development]
 gem "pry", :group => [:develpment, :test ]
 gem "gibbon"
 gem "growl", :group => :test
+gem 'virtus'
+gem 'shoulda-matchers', :group => :test
 
 gem 'guard-spork', :group => [:development, :test]
 gem 'childprocess', :group => [:development, :test]

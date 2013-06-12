@@ -3,6 +3,8 @@ class User
   rolify
   include Mongoid::Timestamps
 
+  embeds_one :name
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -17,7 +19,7 @@ class User
   validates :email, format: { with: /\A[A-Za-z0-9._%+-]+@(swan|swansea)\.ac\.uk\z/i, 
     message: "You can only request an invitation if you have valid #{ENV['INSTITUTION']} email account.."}
 
-  validate :name_validation
+  validate :name_validation, if: :password_required?
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
@@ -73,7 +75,7 @@ class User
   field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
   ## Name
-  field :name, :type => Name, :default => Name.new('Anne','Onymous','Ms')
+  #field :name, :type => Name, :default => Name.new('Anne','Onymous','Ms')
 
   ## Lockable
   # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
@@ -86,10 +88,10 @@ class User
   index({ email: 1 }, { unique: true, background: true })
   #validates_presence_of :name
   attr_accessible :role_ids, :as => :admin
-  attr_accessible :honorific, :first_name, :last_name, :other_names, :preferred_name
+  #attr_accessible :honorific, :first_name, :last_name, :other_names, :preferred_name
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
 
-  before_save :initialize_name
+  before_save :add_default_role
   after_create :add_user_to_mailchimp
   before_destroy :remove_user_from_mailchimp
 
@@ -111,6 +113,19 @@ class User
     pending_any_confirmation {yield}
   end
 
+  # shortcuts for querying roles
+  def admin?
+    return self.has_role?(:admin)
+  end
+
+  def student?
+    return self.has_role?(:student)
+  end
+
+  def supervisor?
+    return self.has_role?(:supervisor)
+  end
+
 private
 
   def name_validation
@@ -128,8 +143,9 @@ private
     end
   end
 
-  def initialize_name
-    name = Name.new(first_name,last_name,honorific,other_names,preferred_name)
+
+  def add_default_role
+    self.add_role(:student) unless (self.has_role?(:admin) || self.has_role?(:supervisor))
   end
 
   def add_user_to_mailchimp
