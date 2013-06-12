@@ -60,6 +60,7 @@ class ConfirmationsController < Devise::PasswordsController
   def do_show
     @confirmation_token = params[:confirmation_token]
     @requires_password = true
+    @confirmable.name = Name.new
     render 'devise/confirmations/show'
   end
 

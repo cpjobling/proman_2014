@@ -47,35 +47,48 @@ describe ConfirmationsController do
         @user.name.full_name.should eq 'Mr Jeremy Frederick Guscott'
       end
 
-      it "redirects to the updated contact"
+      it "should be successful" do
+        response.should be_success
+      end
 
     end
 
     context "invalid attributes" do
       before(:each) do
-        @params = {
-            user: {
-                honorific: '',
-                first_name: '',
-                other_names: '',
-                last_name: 'Guscott',
-                preferred_name: 'Jerry',
-                email: @user.email,
-                password: 'testpass',
-                password_confirmation: 'testpass'
-            },
-            confirmation_token: @user.confirmation_token
-        }
+        @user = FactoryGirl.create(:unconfirmed_registered_user)
       end
 
-      it "located the requested @user" do
+      it "should reject invalid confirmation token" do
+        @params = { user: @user.attributes, confirmation_token: "somejunkstring" }
         put :update, @params
-        assigns(:user).should eq(@user)
+        response.should render_template('devise/confirmations/new')
       end
 
-      it "does not change @user's attributes"
+      it "should reject invalid password" do
+        @params = { user: @user.attributes, confirmation_token: @user.confirmation_token }
+        @params[:user].merge!(password: 'changeme', password_confirmation: 'password')
+        put :update, @params
+        response.should render_template('devise/confirmations/show')
+      end
 
-      it "re-renders the edit method"
+      it "should reject invalid name" do
+        @new_name = { first_name: nil, last_name: nil, other_names: 'Frederick', preferred_name: 'Jerry'}
+        @params = { user: @user.attributes, confirmation_token: @user.confirmation_token }
+        @params[:user][:name_attributes] = @new_name
+        @params[:user].merge!(password: 'changeme', password_confirmation: 'changeme')
+        put :update, @params
+        response.should render_template('devise/confirmations/show')
+      end
+
+      it "does not change @user's attributes for invalid name" do
+        original_name = @user.name
+        @new_name = { other_names: 'Frederick', preferred_name: 'Jerry'}
+        @params = { user: @user.attributes, confirmation_token: @user.confirmation_token }
+        @params[:user][:name_attributes] = @new_name
+        @params[:user].merge!(password: 'changeme', password_confirmation: 'changeme')
+        put :update, @params
+        @user.name.should eq original_name 
+      end
 
     end
 

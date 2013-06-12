@@ -20,7 +20,7 @@ class User
   validates :email, format: { with: /\A[A-Za-z0-9._%+-]+@(swan|swansea)\.ac\.uk\z/i, 
     message: "You can only request an invitation if you have valid #{ENV['INSTITUTION']} email account.."}
 
-  validate :name_validation, if: :password_required?
+  #validate :name_validation, if: :password_required?
 
   # override Devise method
   # no password is required when the account is created; validate password when the user sets one
@@ -74,9 +74,6 @@ class User
   field :confirmed_at,         :type => Time
   field :confirmation_sent_at, :type => Time
   field :unconfirmed_email,    :type => String # Only if using reconfirmable
-
-  ## Name
-  #field :name, :type => Name, :default => Name.new('Anne','Onymous','Ms')
 
   ## Lockable
   # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
@@ -152,21 +149,24 @@ private
   end
 
   def add_user_to_mailchimp
-      return if email.include?(ENV['ADMIN_EMAIL'])
-      mailchimp = Gibbon.new
-      result = mailchimp.list_subscribe({
-        :id => ENV['MAILCHIMP_LIST_ID'],
-        :email_address => self.email,
-        :double_optin => false,
-        :update_existing => true,
-        :send_welcome => true
-        })
+    return unless ENV['RAILS_ENV']=='production'
+    return if email.include?(ENV['ADMIN_EMAIL'])
+
+    mailchimp = Gibbon.new
+    result = mailchimp.list_subscribe({
+      :id => ENV['MAILCHIMP_LIST_ID'],
+      :email_address => self.email,
+      :double_optin => false,
+      :update_existing => true,
+      :send_welcome => true
+      })
       Rails.logger.info("Subscribed #{self.email} to MailChimp") if result
     rescue Gibbon::MailChimpError => e
       Rails.logger.info("MailChimp subscribe failed for #{self.email}: " + e.message)
     end
 
   def remove_user_from_mailchimp
+    return unless ENV['RAILS_ENV']=='production'
     mailchimp = Gibbon.new
     result = mailchimp.list_unsubscribe({
       :id => ENV['MAILCHIMP_LIST_ID'],

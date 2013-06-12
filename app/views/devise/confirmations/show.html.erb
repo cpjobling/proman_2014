@@ -1,3 +1,4 @@
+<% require 'pry' %>
 <h2>Account Activation</h2>
 <%= simple_form_for resource, :as => resource_name, :url => update_user_confirmation_path, :html => {:class => 'form-horizontal', :method => 'put'}, :id => 'activation-form' do |f| %>
   <%= devise_error_messages! %>
@@ -8,11 +9,14 @@
         for <%= resource.email %>
       <% end %>
     </legend>
-    <%= f.input :honorific, collection: %w[Mr Miss Ms Mrs Prof. Dr], label: "Title"%>
-    <%= f.input :first_name %>
-    <%= f.input :other_names, required: false %>
-    <%= f.input :last_name %>
-    <%= f.input :preferred_name, required: false %>
+    <%= f.simple_fields_for :name do |n| %>
+      <% binding.pry %>
+      <%= n.input :honorific, collection: %w[Mr Miss Ms Mrs Prof. Dr], label: "Title"%>
+      <%= n.input :first_name %>
+      <%= n.input :other_names, required: false %>
+      <%= n.input :last_name %>
+      <%= n.input :preferred_name, required: false %>
+    <% end %>
     <% if @requires_password %>
       <%= f.input :password, label: 'Choose a Password:' %>
       <%= f.input :password_confirmation, label: 'Password Confirmation:' %>
