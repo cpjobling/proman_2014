@@ -13,7 +13,7 @@ FactoryGirl.define do
       after(:build) { |user| user.send_confirmation_instructions }
     end
 
-    trait :with_passwords do 
+    trait :with_password do 
       password 'changeme'
       password_confirmation 'changeme'
     end
