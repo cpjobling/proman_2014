@@ -1,0 +1,6 @@
+= f.simple_fields_for name do |n|
+  = n.input :honorific, collection: %w[Mr Miss Ms Mrs Prof. Dr], label: "Title"
+  = n.input :first_name, autofocus: true, placeholder: 'Anne', hint: 'Your given name'
+  = n.input :other_names, required: false, hint: 'Any other names or names and initials &ndash; we use these to distinguish you from other users with similar names.'
+  = n.input :last_name, placeholder: 'Onymous', hint: "Your surname or family name"
+  = n.input :preferred_name, required: false, placeholder: 'Anny', hint: "We use this is informal communications like 'Dear Anny'"
