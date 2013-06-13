@@ -76,6 +76,6 @@ Proman2014::Application.configure do
       :password  => ENV["MANDRILL_API_KEY"]
     }
 
-
+  config.force_ssl = true
 
 end
