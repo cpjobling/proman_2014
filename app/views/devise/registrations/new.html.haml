@@ -9,7 +9,22 @@
     .modal-footer
       = f.submit "Request Invitation", :class => "btn btn-primary", :id => 'invitation_button'
       %a.btn{"data-dismiss" => "modal", :href => "#"} Close
-#romance-copy{:style => "text-align: center; margin-top: 80px"}
-  %h2 Want in?
+#romance-copy{:style => "text-align: center; margin-top: 80px; margin-left:20px; margin-right: 20px;"}
+  %h2
+    Welcome to
+    = logo
+  %p{style: "text-align:left;"}
+    = proman
+    2014 is a web application that is being developed as a tool to support the generation, selection and allocation of Undergraduate Level 3
+    research and dissertation projects for the 2013-2014 session which starts in October.
+  %p{style: "text-align:left;"}
+    Registrations are welcome from all academic staff in the College of Engineering and all students, currently in Level 2 and Level S ("Year Out"),
+    who will be expecting to take on an engineering project next year. By registering your Swansea University email address you will be
+    added to our mailing list and informed when the site is open for project title collection (Staff) and project selection (Students).
+  %p{style: "text-align:left;"}
+    We anticipate that the invitations for joining the site will be issued to staff towards the start of July and Students towards the end of July.
+    Project selection will start in August and will run through to September. Project allocation will commence once progression to Level 3 has been
+    confirmed for all eligible students.
+
 #call-to-action{:style => "text-align: center; margin-top: 80px"}
-  %a.btn.btn-primary.btn-large{"data-toggle" => "modal", :href => "#request-invite"} Request invite
+  %a.btn.btn-primary.btn-large{"data-toggle" => "modal", :href => "#request-invite"} Register for Invitation
