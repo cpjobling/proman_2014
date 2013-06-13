@@ -33,6 +33,16 @@ describe User do
     end
   end
 
+
+  it "should extract login name from email" do
+    addresses = %w[123456@swan.ac.uk a.p.rofessor@swan.ac.uk 123456@swansea.ac.uk a.p.rofessor@swansea.ac.uk]
+    logins = %w[123456 a.p.rofessor 123456 a.p.rofessor]
+    addresses.each_with_index do |address, index|
+      user = User.create!(@attr.merge(:email => address))
+      logins[index].should be_eql user.login
+    end
+  end
+
   it "should reject invalid email addresses" do
     addresses = %w[user@ac,uk user_at_swan.ac.uk example.user@swan.]
     addresses.each do |address|
@@ -70,10 +80,6 @@ describe User do
     end
   end
 
-  def title
-    read_attribute(:title)
-  end
-
   describe "passwords" do
 
     before(:each) do
@@ -88,6 +94,7 @@ describe User do
       @user.should respond_to(:password_confirmation)
     end
   end
+
 
   describe "password validations" do
 
@@ -124,8 +131,6 @@ describe User do
     end
 
   end
-
-  
 
   describe 'roles' do
     before(:each) do
