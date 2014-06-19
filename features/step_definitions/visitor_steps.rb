@@ -1,11 +1,10 @@
 def new_user
-  @user ||= { :email => "visitor@#{ENV['EMAIL_DOMAIN']}",
-    :password => "changeme", :password_confirmation => "changeme" }
+  @user ||= FactoryGirl.build(:user, email: "visitor@#{ENV['EMAIL_DOMAIN']}")
 end
 
 def invitation_request user
   visit '/users/sign_up'
-  fill_in "Email", :with => user[:email]
+  fill_in "Email", :with => @user.email
   click_button "Request Invitation"
 end
 
@@ -45,12 +44,12 @@ When /^I request an invitation with valid user data$/ do
 end
 
 When /^I request an invitation with an invalid email$/ do
-  user = new_user.merge(:email => "notanemail")
+  user = new_user.email = "notanemail"
   invitation_request user
 end
 
 When(/^I request an invitation from an invalid domain$/) do
-  user = new_user.merge(:email => "visitor@example.com")
+  user = new_user.email = "visitor@example.com"
   invitation_request user
 end
 

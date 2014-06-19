@@ -16,7 +16,7 @@ class ConfirmationsController < Devise::PasswordsController
   def update
     with_unconfirmed_confirmable do
       if @confirmable.has_no_password?
-        @confirmable.attempt_set_password(params[:user])
+        @confirmable.attempt_set_name_and_password(params[:user])
         if @confirmable.valid?
           do_confirm
         else
@@ -60,6 +60,7 @@ class ConfirmationsController < Devise::PasswordsController
   def do_show
     @confirmation_token = params[:confirmation_token]
     @requires_password = true
+    @confirmable.name = Name.new
     render 'devise/confirmations/show'
   end
 

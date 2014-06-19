@@ -1,8 +1,7 @@
 ### UTILITY METHODS ###
 
 def create_visitor
-  @visitor ||= { :name => "Mr Testy McUserton", :email => "example@#{ENV['EMAIL_DOMAIN']}",
-    :password => "changeme", :password_confirmation => "changeme" }
+  @visitor ||= FactoryGirl.attributes_for(:user, :with_password, email: "example@#{ENV['EMAIL_DOMAIN']}")
 end
 
 def find_user
@@ -19,7 +18,7 @@ end
 def create_user
   create_visitor
   delete_user
-  @user = FactoryGirl.create(:user, email: @visitor[:email])
+  @user = FactoryGirl.create(:confirmed_user, :with_password, email: @visitor[:email])
 end
 
 def delete_user
@@ -123,7 +122,8 @@ end
 
 When /^I edit my account details$/ do
   click_link "Edit account"
-  fill_in "Name", :with => "newname"
+  name = FactoryGirl.build(:name, first_name: 'Christopher', preferred_name: 'Chris')
+  enter_name(name)
   fill_in "user_current_password", :with => @visitor[:password]
   click_button "Update"
 end

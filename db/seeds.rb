@@ -13,8 +13,12 @@ YAML.load(ENV['ROLES']).each do |role|
   puts 'role: ' << role
 end
 puts 'DEFAULT USERS'
-user = User.create! :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup
-puts 'user: ' << user.name
+user = User.create!(
+  name: { last_name: 'Administrator', first_name: 'Big', other_names: 'Boss' },
+  email: ENV['ADMIN_EMAIL'].dup,
+  password: ENV['ADMIN_PASSWORD'].dup,
+  password_confirmation: ENV['ADMIN_PASSWORD'].dup )
+puts 'user: ' << user.name.to_s
 user.add_role :admin
 user.skip_confirmation!
 user.save!

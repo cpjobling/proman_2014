@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
+
+ruby '2.0.0'
 gem 'rails', '3.2.13'
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -25,7 +28,7 @@ gem "rb-inotify", ">= 0.9.0", :group => :development, :require => false
 gem "rb-fsevent", ">= 0.9.3", :group => :development, :require => false
 gem "rb-fchange", ">= 0.0.6", :group => :development, :require => false
 gem "factory_girl_rails", ">= 4.2.0", :group => [:development, :test]
-gem "bootstrap-sass", :group => :assets
+gem "bootstrap-sass", '~> 2.3.1.3', :group => :assets
 gem "libv8", ">= 3.11.8"
 gem "therubyracer", ">= 0.11.3", :group => :assets, :platform => :ruby, :require => "v8"
 gem "devise", ">= 2.2.3"
@@ -35,11 +38,13 @@ gem "simple_form", ">= 2.1.0"
 gem "quiet_assets", ">= 1.0.2", :group => :development
 gem "figaro", ">= 0.6.3"
 gem "better_errors", :group => :development
-gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri_19, :rbx]
+gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri_20, :mri_19, :rbx]
 gem "hub", ">= 1.10.2", :require => nil, :group => [:development]
 gem "pry", :group => [:develpment, :test ]
 gem "gibbon"
 gem "growl", :group => :test
+gem 'virtus'
+gem 'shoulda-matchers', :group => :test
 
 gem 'guard-spork', :group => [:development, :test]
 gem 'childprocess', :group => [:development, :test]

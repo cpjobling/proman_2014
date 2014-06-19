@@ -3,7 +3,7 @@ require 'spec_helper'
 describe UsersController do
 
   before (:each) do
-    @user = FactoryGirl.create(:user)
+    @user = FactoryGirl.create(:confirmed_user, :with_password)
     sign_in @user
   end
 
